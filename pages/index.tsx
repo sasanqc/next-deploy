@@ -1,13 +1,25 @@
 import { Inter } from "next/font/google";
-
+import type { NextPage } from "next";
+import { selectAuthState, setAuthState } from "@/store/authSlice";
+import { useDispatch, useSelector } from "react-redux";
 const inter = Inter({ subsets: ["latin"] });
 
-export default function Home() {
+const Home: NextPage = () => {
+  const authState = useSelector(selectAuthState);
+  const dispatch = useDispatch();
   return (
-    <main
-      className={`flex min-h-screen flex-col items-center justify-between p-24 ${inter.className}`}
-    >
-      <h1>This is my app for deploy</h1>
-    </main>
+    <div>
+      <div>{authState ? "Logged in" : "Not Logged In"}</div>
+      <button
+        onClick={() =>
+          authState
+            ? dispatch(setAuthState(false))
+            : dispatch(setAuthState(true))
+        }
+      >
+        {authState ? "Logout" : "LogIn"}
+      </button>
+    </div>
   );
-}
+};
+export default Home;
